@@ -5,6 +5,7 @@ import helpers.setup
 import helpers.adb
 import helpers.get_schemes
 import helpers.poc
+import time
 
 APKTOOL_PATH = 'apktool'
 ADB_PATH = 'adb'
@@ -12,6 +13,7 @@ DEFAULT_STRINGS_FILE = '/res/values/strings.xml'
 DEFAULT_MANIFEST_FILE = '/AndroidManifest.xml'
 POC_FILENAME = 'poc.html'
 POC_DEST_DIR = '/sdcard/'
+WAIT_APP_LINK_SECONDS = 10
 
 def main(strings_file, manifest_file, package, apk, op, verbose, cicd):
     deeplinks = helpers.get_schemes.get_schemes(strings_file, manifest_file)
@@ -45,7 +47,9 @@ def main(strings_file, manifest_file, package, apk, op, verbose, cicd):
                     os.system(
                         f'adb shell am start -a android.intent.action.VIEW -d "{deeplink}"'
                     )
-                    input("Press 'Enter' to test next App Link ...")
+                    # input("Press 'Enter' to test next App Link ...")
+                    write_to_console(f'\nWaiting {WAIT_APP_LINK_SECONDS} seconds', BColors.OKGREEN)
+                    time.sleep(WAIT_APP_LINK_SECONDS)
 
 if __name__ == '__main__':
     args = helpers.setup.get_parsed_args()
